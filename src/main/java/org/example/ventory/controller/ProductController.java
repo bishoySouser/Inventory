@@ -1,28 +1,38 @@
 package org.example.ventory.controller;
 
 import org.example.ventory.model.Product;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.example.ventory.service.ProductService;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
+@RequestMapping("/products")
 public class ProductController {
+    private final ProductService productService;
 
-    @GetMapping("/products")
-    public String index()
-    {
-        return "Get All products.";
+    public ProductController(ProductService productService) {
+        this.productService = productService;
     }
 
-    @GetMapping("/products/{id}")
-    public Product show(@PathVariable int id)
+    @GetMapping
+    public List<Product> getAllProducts()
     {
-        return new Product(id, "Labtop");
+        List<Product> productList = new ArrayList<>();
+        productList.add(new Product(1, "bed"));
+        productList.add(new Product(2, "bed"));
+        return productList;
     }
 
-    @GetMapping("/products/search")
-    public String search(@RequestParam(defaultValue = "all") String name) {
+    @GetMapping("/{id}")
+    public Product getProduct(@PathVariable int id)
+    {
+        return productService.findById(id);
+    }
+
+    @GetMapping("/search")
+    public String searchProducts(@RequestParam(defaultValue = "all") String name) {
         return "Search about the product -> " + name;
     }
 }

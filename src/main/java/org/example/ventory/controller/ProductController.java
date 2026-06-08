@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/products")
@@ -17,22 +18,19 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> getAllProducts()
+    public List<Product> getAll()
     {
-        List<Product> productList = new ArrayList<>();
-        productList.add(new Product(1, "bed"));
-        productList.add(new Product(2, "bed"));
-        return productList;
+        return productService.getAll();
     }
 
     @GetMapping("/{id}")
-    public Product getProduct(@PathVariable int id)
+    public Optional<Product> get(@PathVariable int id)
     {
         return productService.findById(id);
     }
 
-    @GetMapping("/search")
-    public String searchProducts(@RequestParam(defaultValue = "all") String name) {
-        return "Search about the product -> " + name;
+    @PostMapping
+    public Product create(@RequestBody Product product) {
+        return productService.create(product);
     }
 }

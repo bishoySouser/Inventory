@@ -1,9 +1,15 @@
 package org.example.ventory.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+@Entity
 public class Product {
 
+    @Id
     private int id;
     private String name;
+
 
     public Product(int id, String name) {
         this.id = id;

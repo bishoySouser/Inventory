@@ -1,6 +1,9 @@
 package org.example.ventory.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "products")
@@ -11,9 +14,12 @@ public class Product {
     private Long id;
 
     @Column(name = "product_name")
+    @NotBlank(message = "Product name cannot be empty")
+    @Size(min = 2, max = 100, message = "Name must be between 2 and 100 characters")
     private String name;
 
     @Column(name = "product_price")
+    @Min(value= 0, message = "Price must be greater than or equal to 0")
     private Double price;
 
     public Product() {}

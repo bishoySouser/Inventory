@@ -2,6 +2,8 @@ package org.example.ventory.controller;
 
 import org.example.ventory.entities.Product;
 import org.example.ventory.services.ProductService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,19 +19,34 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> getAll()
+    public ResponseEntity<List<Product>> getAll()
     {
-        return productService.getAllProducts();
+        List<Product> products =  productService.getAllProducts();
+        return ResponseEntity.ok(products);
     }
 
     @GetMapping("/{id}")
-    public Optional<Product> getById(@PathVariable Long id)
+    public ResponseEntity<Product> getById(@PathVariable Long id)
     {
-        return productService.findById(id);
+        Product product = productService.getProductById(id);
+        return ResponseEntity.ok(product);
     }
 
     @PostMapping
-    public Product create(@RequestBody Product product) {
-        return productService.CreateNewProduct(product);
+    public ResponseEntity<Product> create(@RequestBody Product product) {
+        Product savedProduct =  productService.createNewProduct(product);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedProduct);
+
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Product> update(@PathVariable Long id, @RequestBody Product updatedProduct) {
+        return ResponseEntity.ok(productService.updateProduct(id, updatedProduct));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+        productService.deleteProduct(id);
+        return ResponseEntity.noContent().build();
     }
 }

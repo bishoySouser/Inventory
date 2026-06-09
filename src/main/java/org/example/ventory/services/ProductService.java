@@ -4,9 +4,7 @@ import org.example.ventory.entities.Product;
 import org.example.ventory.repositories.ProductRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -17,11 +15,12 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public Optional<Product> findById(Long id) {
-        return productRepository.findById(id);
+    public Product getProductById(Long id) {
+        return productRepository.findById(id)
+            .orElseThrow();
     }
 
-    public Product CreateNewProduct(Product product) {
+    public Product createNewProduct(Product product) {
         return productRepository.save(product);
     }
 
@@ -35,5 +34,20 @@ public class ProductService {
 
     public List<Product> getCheapProducts() {
         return productRepository.findByPriceLessThan(20.0);
+    }
+
+    public Product updateProduct(Long id, Product updateProduct) {
+        Product existingProduct = productRepository.findById(id)
+            .orElseThrow();
+
+        existingProduct.setName(updateProduct.getName());
+        existingProduct.setPrice(updateProduct.getPrice());
+
+        return productRepository.save(existingProduct);
+    }
+
+    public void deleteProduct(Long id) {
+        Product existingProduct = this.getProductById(id);
+        productRepository.deleteById(id);
     }
 }

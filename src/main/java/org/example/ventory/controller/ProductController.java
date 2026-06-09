@@ -1,10 +1,9 @@
 package org.example.ventory.controller;
 
-import org.example.ventory.model.Product;
-import org.example.ventory.service.ProductService;
+import org.example.ventory.entities.Product;
+import org.example.ventory.services.ProductService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,17 +19,17 @@ public class ProductController {
     @GetMapping
     public List<Product> getAll()
     {
-        return productService.getAll();
+        return productService.getAllProducts();
     }
 
     @GetMapping("/{id}")
-    public Optional<Product> getById(@PathVariable int id)
+    public Optional<Product> getById(@PathVariable Long id)
     {
         return productService.findById(id);
     }
 
     @PostMapping
     public Product create(@RequestBody Product product) {
-        return productService.create(product);
+        return productService.CreateNewProduct(product);
     }
 }

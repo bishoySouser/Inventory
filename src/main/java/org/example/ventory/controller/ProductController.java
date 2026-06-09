@@ -1,5 +1,6 @@
 package org.example.ventory.controller;
 
+import jakarta.validation.Valid;
 import org.example.ventory.entities.Product;
 import org.example.ventory.services.ProductService;
 import org.springframework.http.HttpStatus;
@@ -33,14 +34,14 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> create(@RequestBody Product product) {
+    public ResponseEntity<Product> create(@Valid @RequestBody Product product) {
         Product savedProduct =  productService.createNewProduct(product);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedProduct);
 
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Product> update(@PathVariable Long id, @RequestBody Product updatedProduct) {
+    public ResponseEntity<Product> update(@PathVariable Long id, @Valid @RequestBody Product updatedProduct) {
         return ResponseEntity.ok(productService.updateProduct(id, updatedProduct));
     }
 

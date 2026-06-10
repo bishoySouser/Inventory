@@ -1,6 +1,7 @@
 package org.example.ventory.services;
 
 import org.example.ventory.entities.Product;
+import org.example.ventory.exceptions.ProductNotFoundException;
 import org.example.ventory.repositories.ProductRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +18,7 @@ public class ProductService {
 
     public Product getProductById(Long id) {
         return productRepository.findById(id)
-            .orElseThrow();
+            .orElseThrow(() -> new ProductNotFoundException("Product with id " + id + " not found"));
     }
 
     public Product createNewProduct(Product product) {
@@ -47,7 +48,7 @@ public class ProductService {
     }
 
     public void deleteProduct(Long id) {
-        Product existingProduct = this.getProductById(id);
+        getProductById(id);
         productRepository.deleteById(id);
     }
 }

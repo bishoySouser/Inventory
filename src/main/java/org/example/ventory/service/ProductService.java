@@ -1,8 +1,12 @@
-package org.example.ventory.services;
+package org.example.ventory.service;
 
-import org.example.ventory.entities.Product;
-import org.example.ventory.exceptions.ProductNotFoundException;
-import org.example.ventory.repositories.ProductRepository;
+import jakarta.validation.Valid;
+import org.example.ventory.dto.ProductRequestDTO;
+import org.example.ventory.dto.ProductResponseDTO;
+import org.example.ventory.entity.Product;
+import org.example.ventory.exception.ProductNotFoundException;
+import org.example.ventory.mapper.ProductMapper;
+import org.example.ventory.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,16 +25,26 @@ public class ProductService {
             .orElseThrow(() -> new ProductNotFoundException("Product with id " + id + " not found"));
     }
 
-    public Product createNewProduct(Product product) {
-        return productRepository.save(product);
+    public ProductResponseDTO createNewProduct(@Valid ProductRequestDTO requestDTO) {
+        Product productEntity = ProductMapper.toEntity(requestDTO);
+
+        Product savedProduct = productRepository.save(productEntity);
+
+        return ProductMapper.toDTO(savedProduct);
     }
 
-    public List<Product> findByName(String name) {
-        return productRepository.findByName(name);
+    public List<ProductResponseDTO> findByName(String name) {
+        return productRepository.findByName(name)
+                .stream()
+                .map(ProductMapper::toDTO)
+                .toList();
     }
 
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<ProductResponseDTO> getAllProducts() {
+        return productRepository.findAll()
+                .stream()
+                .map(ProductMapper::toDTO)
+                .toList();
     }
 
     public List<Product> getCheapProducts() {

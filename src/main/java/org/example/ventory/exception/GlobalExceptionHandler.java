@@ -1,4 +1,4 @@
-package org.example.ventory.exceptions;
+package org.example.ventory.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

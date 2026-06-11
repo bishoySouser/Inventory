@@ -1,4 +1,4 @@
-package org.example.ventory.entities;
+package org.example.ventory.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -19,6 +19,10 @@ public class Product {
     @Column(name = "product_price")
     @Positive
     private Double price;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
 
     public Product() {}
 
@@ -44,5 +48,13 @@ public class Product {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }

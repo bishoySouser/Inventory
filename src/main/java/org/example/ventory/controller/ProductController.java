@@ -1,14 +1,15 @@
 package org.example.ventory.controller;
 
 import jakarta.validation.Valid;
-import org.example.ventory.entities.Product;
-import org.example.ventory.services.ProductService;
+import org.example.ventory.dto.ProductRequestDTO;
+import org.example.ventory.dto.ProductResponseDTO;
+import org.example.ventory.entity.Product;
+import org.example.ventory.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/products")
@@ -20,9 +21,9 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Product>> getAll()
+    public ResponseEntity<List<ProductResponseDTO>> getAll()
     {
-        List<Product> products =  productService.getAllProducts();
+        List<ProductResponseDTO> products =  productService.getAllProducts();
         return ResponseEntity.ok(products);
     }
 
@@ -34,8 +35,8 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> create(@Valid @RequestBody Product product) {
-        Product savedProduct =  productService.createNewProduct(product);
+    public ResponseEntity<ProductResponseDTO> create(@Valid @RequestBody ProductRequestDTO requestDTO) {
+        ProductResponseDTO savedProduct =  productService.createNewProduct(requestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedProduct);
 
     }

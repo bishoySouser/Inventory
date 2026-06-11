@@ -1,6 +1,6 @@
-package org.example.ventory.repositories;
+package org.example.ventory.repository;
 
-import org.example.ventory.entities.Product;
+import org.example.ventory.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

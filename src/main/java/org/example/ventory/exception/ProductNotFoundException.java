@@ -1,4 +1,4 @@
-package org.example.ventory.exceptions;
+package org.example.ventory.exception;
 
 public class ProductNotFoundException extends RuntimeException {
 

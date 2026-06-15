@@ -10,7 +10,6 @@ public record ProductRequestDTO(
         @Size(min = 2, max = 100, message = "Name must be between 2 and 100 characters")
         String name,
 
-        @Column(name = "product_price")
         @Positive
         Double price
 ) {

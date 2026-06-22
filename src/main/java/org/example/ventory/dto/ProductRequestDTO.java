@@ -4,6 +4,8 @@ import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
+import org.example.ventory.entity.Category;
+import org.example.ventory.entity.Supplier;
 
 public record ProductRequestDTO(
         @NotBlank(message = "Product name cannot be empty")
@@ -11,6 +13,9 @@ public record ProductRequestDTO(
         String name,
 
         @Positive
-        Double price
+        Double price,
+
+        Category category,
+        Supplier supplier
 ) {
 }

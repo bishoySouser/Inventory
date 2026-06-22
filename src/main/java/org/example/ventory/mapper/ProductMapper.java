@@ -9,7 +9,9 @@ public class ProductMapper {
         return new ProductResponseDTO(
                 product.getId(),
                 product.getName(),
-                product.getPrice()
+                product.getPrice(),
+                product.getCategory(),
+                product.getSupplier()
         );
     }
 
@@ -17,6 +19,8 @@ public class ProductMapper {
         Product product = new Product();
         product.setName(requestDTO.name());
         product.setPrice(requestDTO.price());
+        product.setCategory(requestDTO.category());
+        product.setSupplier(requestDTO.supplier());
         return product;
     }
 }

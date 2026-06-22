@@ -2,6 +2,8 @@ package org.example.ventory.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "suppliers")
 public class Supplier {
@@ -13,6 +15,9 @@ public class Supplier {
     private String name;
     private String email;
     private String phone;
+
+    @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Product> products;
 
     public Supplier() {}
 

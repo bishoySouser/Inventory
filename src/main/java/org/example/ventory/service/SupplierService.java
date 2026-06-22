@@ -1,6 +1,7 @@
 package org.example.ventory.service;
 
 import org.example.ventory.entity.Supplier;
+import org.example.ventory.exception.SupplierNotFoundException;
 import org.example.ventory.repository.SupplierRepository;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,11 @@ public class SupplierService {
 
     public Supplier getSupplierById(Long id) {
         return supplierRepository.findById(id)
-                .orElseThrow();
+                .orElseThrow(
+                    () -> new SupplierNotFoundException(
+                        "Supplier with id " + id + " not found"
+                    )
+                );
     }
 
     public Supplier updateSupplier(Long id,Supplier updateSupplier) {
@@ -37,5 +42,10 @@ public class SupplierService {
         existingSupplier.setPhone(updateSupplier.getPhone());
 
         return supplierRepository.save(existingSupplier);
+    }
+
+    public void deleteSupplier(Long id) {
+        Supplier existingSupplier = this.getSupplierById(id);
+        supplierRepository.delete(existingSupplier);
     }
 }

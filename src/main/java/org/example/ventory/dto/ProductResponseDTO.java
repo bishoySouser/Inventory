@@ -7,7 +7,7 @@ public record ProductResponseDTO(
        Long id,
        String name,
        Double price,
-       Category category,
-       Supplier supplier
+       String categoryName,
+       String supplierName
 ) {
 }

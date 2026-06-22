@@ -15,7 +15,7 @@ public record ProductRequestDTO(
         @Positive
         Double price,
 
-        Category category,
-        Supplier supplier
+        Long categoryId,
+        Long supplierId
 ) {
 }

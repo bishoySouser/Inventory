@@ -27,11 +27,11 @@ public class SupplierService {
 
     public Supplier getSupplierById(Long id) {
         return supplierRepository.findById(id)
-                .orElseThrow(
-                    () -> new SupplierNotFoundException(
-                        "Supplier with id " + id + " not found"
-                    )
-                );
+            .orElseThrow(
+                () -> new SupplierNotFoundException(
+                    "Supplier with id " + id + " not found"
+                )
+            );
     }
 
     public Supplier updateSupplier(Long id,Supplier updateSupplier) {
@@ -42,10 +42,5 @@ public class SupplierService {
         existingSupplier.setPhone(updateSupplier.getPhone());
 
         return supplierRepository.save(existingSupplier);
-    }
-
-    public void deleteSupplier(Long id) {
-        Supplier existingSupplier = this.getSupplierById(id);
-        supplierRepository.delete(existingSupplier);
     }
 }

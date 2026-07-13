@@ -3,10 +3,14 @@ package org.example.ventory.service;
 import jakarta.validation.Valid;
 import org.example.ventory.dto.ProductRequestDTO;
 import org.example.ventory.dto.ProductResponseDTO;
+import org.example.ventory.entity.Category;
 import org.example.ventory.entity.Product;
+import org.example.ventory.entity.Supplier;
 import org.example.ventory.exception.ProductNotFoundException;
 import org.example.ventory.mapper.ProductMapper;
+import org.example.ventory.repository.CategoryRepository;
 import org.example.ventory.repository.ProductRepository;
+import org.example.ventory.repository.SupplierRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,9 +19,16 @@ import java.util.List;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
+    private final SupplierRepository supplierRepository;
 
-    public ProductService(ProductRepository productRepository) {
+    public ProductService(
+        ProductRepository productRepository,
+        CategoryRepository categoryRepository,
+        SupplierRepository supplierRepository) {
         this.productRepository = productRepository;
+        this.categoryRepository = categoryRepository;
+        this.supplierRepository = supplierRepository;
     }
 
     public Product getProductById(Long id) {
@@ -26,7 +37,12 @@ public class ProductService {
     }
 
     public ProductResponseDTO createNewProduct(@Valid ProductRequestDTO requestDTO) {
-        Product productEntity = ProductMapper.toEntity(requestDTO);
+
+        Category category = categoryRepository.findById(requestDTO.categoryId())
+            .orElseThrow( () -> new ProductNotFoundException("") );
+        Supplier supplier = supplierRepository.findById(requestDTO.supplierId())
+            .orElseThrow();
+        Product productEntity = ProductMapper.toEntity(requestDTO, category, supplier);
 
         Product savedProduct = productRepository.save(productEntity);
 

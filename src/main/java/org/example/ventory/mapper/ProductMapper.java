@@ -5,8 +5,6 @@ import org.example.ventory.dto.ProductResponseDTO;
 import org.example.ventory.entity.Category;
 import org.example.ventory.entity.Product;
 import org.example.ventory.entity.Supplier;
-import org.example.ventory.repository.CategoryRepository;
-import org.example.ventory.repository.SupplierRepository;
 
 public class ProductMapper {
     public static ProductResponseDTO toDTO(Product product) {
@@ -20,21 +18,13 @@ public class ProductMapper {
     }
 
     public static Product toEntity(ProductRequestDTO requestDTO,
-                                   CategoryRepository categoryRepository,
-                                   SupplierRepository supplierRepository
+                                   Category category,
+                                   Supplier supplier
     ) {
         Product product = new Product();
         product.setName(requestDTO.name());
         product.setPrice(requestDTO.price());
-
-        Category category = categoryRepository.findById(
-            requestDTO.categoryId()
-        ).orElseThrow();
         product.setCategory(category);
-
-        Supplier supplier = supplierRepository.findById(
-            requestDTO.supplierId()
-        ).orElseThrow();
         product.setSupplier(supplier);
 
         return product;

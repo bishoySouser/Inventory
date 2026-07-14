@@ -2,6 +2,7 @@ package org.example.ventory.service;
 
 import jakarta.transaction.Transactional;
 import org.example.ventory.entity.Product;
+import org.example.ventory.entity.StockMovement;
 import org.example.ventory.enums.MovementType;
 import org.example.ventory.repository.StockMovementRepository;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,10 @@ public class StockMovementService {
 
     @Transactional
     public void updateStock(Product product, Integer quantity, MovementType movementType) {
-
+        StockMovement movement = new StockMovement();
+        movement.setProduct(product);
+        movement.setQuantity(quantity);
+        movement.setMovementType(movementType);
+        stockMovementRepository.save(movement);
     }
 }

@@ -2,11 +2,15 @@ package org.example.ventory.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import org.example.ventory.enums.MovementType;
+import org.example.ventory.exception.InsufficientStockException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "products")
 public class Product {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,8 +24,12 @@ public class Product {
     @Positive
     private Double price;
 
-    @OneToMany(mappedBy = "stock_movement", cascade = CascadeType.ALL)
-    private StockMovement stockMovement;
+    @Column(name = "product_quantity")
+    @Positive
+    private Long quantity;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<StockMovement> stockMovement = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
@@ -73,11 +81,29 @@ public class Product {
         this.supplier = supplier;
     }
 
-    public StockMovement getStockMovement() {
+    public List<StockMovement> getStockMovement() {
         return stockMovement;
     }
 
-    public void setStockMovement(StockMovement stockMovement) {
+    public void setStockMovement(List<StockMovement> stockMovement) {
         this.stockMovement = stockMovement;
+    }
+
+    public Long getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Long quantity) {
+        this.quantity = quantity;
+    }
+
+    public void applyMovement(int quantity, MovementType type) {
+        if (type == MovementType.IN) {
+            this.quantity += quantity;
+        } else {
+            if (this.quantity < quantity)
+                throw new InsufficientStockException("the quantity greater than the stock");
+            this.quantity -= quantity;
+        }
     }
 }

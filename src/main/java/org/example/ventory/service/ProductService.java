@@ -57,8 +57,8 @@ public class ProductService {
     }
 
     public List<ProductResponseDTO> getAllProducts() {
-        return productRepository.findAll()
-                .stream()
+        List<Product> products = productRepository.findAllWithAssociations();
+        return products.stream()
                 .map(ProductMapper::toDTO)
                 .toList();
     }
@@ -78,7 +78,7 @@ public class ProductService {
     }
 
     public void deleteProduct(Long id) {
-        getProductById(id);
-        productRepository.deleteById(id);
+        Product product = getProductById(id);
+        productRepository.delete(product);
     }
 }

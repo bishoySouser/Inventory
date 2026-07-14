@@ -20,6 +20,9 @@ public class Product {
     @Positive
     private Double price;
 
+    @OneToMany(mappedBy = "stock_movement", cascade = CascadeType.ALL)
+    private StockMovement stockMovement;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
@@ -68,5 +71,13 @@ public class Product {
 
     public void setSupplier(Supplier supplier) {
         this.supplier = supplier;
+    }
+
+    public StockMovement getStockMovement() {
+        return stockMovement;
+    }
+
+    public void setStockMovement(StockMovement stockMovement) {
+        this.stockMovement = stockMovement;
     }
 }

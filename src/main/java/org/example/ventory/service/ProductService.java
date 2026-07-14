@@ -22,7 +22,10 @@ public class ProductService {
     private final CategoryRepository categoryRepository;
     private final SupplierRepository supplierRepository;
 
-    public ProductService(ProductRepository productRepository, CategoryRepository categoryRepository, SupplierRepository supplierRepository) {
+    public ProductService(
+            ProductRepository productRepository,
+            CategoryRepository categoryRepository,
+            SupplierRepository supplierRepository) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
         this.supplierRepository = supplierRepository;
@@ -30,20 +33,14 @@ public class ProductService {
 
     public Product getProductById(Long id) {
         return productRepository.findById(id)
-            .orElseThrow(() -> new ProductNotFoundException("Product with id " + id + " not found"));
+                .orElseThrow(() -> new ProductNotFoundException("Product with id " + id + " not found"));
     }
 
     public ProductResponseDTO createNewProduct(@Valid ProductRequestDTO requestDTO) {
-        Category category =
-                categoryRepository.findById(
-                        requestDTO.categoryId()
-                        )
-                        .orElseThrow();
 
-        Supplier supplier =
-                supplierRepository.findById(
-                    requestDTO.supplierId()
-                )
+        Category category = categoryRepository.findById(requestDTO.categoryId())
+                .orElseThrow( () -> new ProductNotFoundException("") );
+        Supplier supplier = supplierRepository.findById(requestDTO.supplierId())
                 .orElseThrow();
         Product productEntity = ProductMapper.toEntity(requestDTO, category, supplier);
 
@@ -72,7 +69,7 @@ public class ProductService {
 
     public Product updateProduct(Long id, Product updateProduct) {
         Product existingProduct = productRepository.findById(id)
-            .orElseThrow();
+                .orElseThrow();
 
         existingProduct.setName(updateProduct.getName());
         existingProduct.setPrice(updateProduct.getPrice());

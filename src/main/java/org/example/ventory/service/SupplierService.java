@@ -28,9 +28,9 @@ public class SupplierService {
     public Supplier getSupplierById(Long id) {
         return supplierRepository.findById(id)
                 .orElseThrow(
-                    () -> new SupplierNotFoundException(
-                        "Supplier with id " + id + " not found"
-                    )
+                        () -> new SupplierNotFoundException(
+                                "Supplier with id " + id + " not found"
+                        )
                 );
     }
 
@@ -45,7 +45,7 @@ public class SupplierService {
     }
 
     public void deleteSupplier(Long id) {
-        Supplier existingSupplier = getSupplierById(id);
-        supplierRepository.delete(existingSupplier);
+        getSupplierById(id);
+        supplierRepository.deleteById(id);
     }
 }

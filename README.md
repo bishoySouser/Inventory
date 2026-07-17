@@ -1,164 +1,357 @@
-# Ventory
+# 🚀 Ventory
 
-Ventory is a Java-based RESTful backend application built with **Spring Boot**. It is designed to be a robust, secure, and well-structured application, suitable for inventory management or similar domain-driven services.
+<p align="center">
+  <img src="https://img.shields.io/badge/Java-21-red" />
+  <img src="https://img.shields.io/badge/Spring%20Boot-3.x-brightgreen" />
+  <img src="https://img.shields.io/badge/Spring%20Security-JWT-success" />
+  <img src="https://img.shields.io/badge/Database-MySQL-orange" />
+  <img src="https://img.shields.io/badge/Build-Maven-blue" />
+  <img src="https://img.shields.io/badge/Architecture-Layered-important" />
+</p>
 
-## 🚀 Key Features
+## 📌 Overview
 
-*   **RESTful Architecture**: Follows best practices with separated layers for `controller`, `service`, `repository`, `entity`, and `dto`.
-*   **Secure Authentication**: Integrated with **Spring Security** and utilizes **JSON Web Tokens (JWT)** for stateless authentication and authorization.
-*   **Data Persistence**: Leverages **Spring Data JPA** for ORM and data operations.
-*   **In-Memory Database**: Pre-configured with the **H2 Database** for rapid development and testing without external database dependencies.
-*   **Data Validation**: Implements robust request validation using Spring Boot Starter Validation.
-*   **Clean Code**: Uses **Lombok** to reduce boilerplate code (getters, setters, constructors) and dedicated `mapper` classes for entity-to-DTO conversion.
-*   **Exception Handling**: Custom, centralized error handling in the `exception` package.
+Ventory is a **production-style Inventory Management System** built with **Java 21** and **Spring Boot**.
 
-## 🛠️ Technology Stack
+The project was created to demonstrate modern backend engineering practices including secure authentication, layered architecture, clean code principles, DTO mapping, exception handling, validation, and scalable REST API design.
 
-*   **Language**: Java 21
-*   **Framework**: Spring Boot
-*   **Security**: Spring Security & JJWT (Java JWT)
-*   **Database**: H2 (In-memory)
-*   **ORM**: Spring Data JPA / Hibernate
-*   **Build Tool**: Maven
-*   **Utilities**: Lombok
+Rather than being a simple CRUD application, Ventory focuses on writing maintainable, production-ready backend code following industry best practices.
 
-## 🏗️ Architecture Diagram
+---
 
-```mermaid
-graph TD
-    Client[Client / Frontend] -->|HTTP REST| Controller[Controller Layer]
-    Controller -->|DTOs| Service[Service Layer]
-    Service -->|Entities| Repository[Repository Layer]
-    Repository -->|Spring Data JPA| DB[(H2 Database)]
-    
-    Controller -.->|Authenticates| Security[Spring Security + JWT]
+# ✨ Features
+
+## Authentication & Security
+
+- JWT Authentication
+- Spring Security
+- Role-Based Authorization
+- Password Encryption
+- Stateless Authentication
+
+---
+
+## Inventory Management
+
+- Products Management
+- Categories Management
+- Suppliers Management
+- Stock Movement Tracking
+- Inventory Quantity Updates
+
+---
+
+## Backend Engineering
+
+- Layered Architecture
+- DTO Pattern
+- Repository Pattern
+- Dependency Injection
+- Service Layer
+- Global Exception Handling
+- Bean Validation
+- Clean REST APIs
+
+---
+
+## Persistence
+
+- Spring Data JPA
+- Hibernate ORM
+- Entity Relationships
+- Transaction Management
+
+---
+
+# 🛠 Technology Stack
+
+| Category | Technology |
+|----------|------------|
+| Language | Java 21 |
+| Framework | Spring Boot 3 |
+| Security | Spring Security + JWT |
+| ORM | Hibernate / Spring Data JPA |
+| Database | MySQL |
+| Build Tool | Maven |
+| Validation | Jakarta Bean Validation |
+| Mapping | DTO + Mapper Classes |
+| Utilities | Lombok |
+
+---
+
+# 🏗 Architecture
+
+```
+Client
+
+        │
+        ▼
+
+Spring Security (JWT)
+
+        │
+        ▼
+
+Controllers
+
+        │
+        ▼
+
+Services
+
+        │
+        ▼
+
+Repositories
+
+        │
+        ▼
+
+MySQL Database
 ```
 
-## 🗄️ Entity Relationship Diagram (ERD)
+The application follows a **Layered Architecture**, separating responsibilities into independent layers to improve maintainability, readability, and scalability.
 
-```mermaid
-erDiagram
-    USER {
-        Long id
-        String username
-        String password
-        String role
-    }
-    CATEGORY {
-        Long id
-        String name
-        String description
-    }
-    SUPPLIER {
-        Long id
-        String name
-        String contactInfo
-    }
-    PRODUCT {
-        Long id
-        String name
-        Double price
-        Integer quantity
-    }
-    STOCK_MOVEMENT {
-        Long id
-        String type
-        Integer quantity
-        LocalDateTime timestamp
-    }
+---
 
-    CATEGORY ||--o{ PRODUCT : contains
-    SUPPLIER ||--o{ PRODUCT : supplies
-    PRODUCT ||--o{ STOCK_MOVEMENT : tracks
-    USER ||--o{ STOCK_MOVEMENT : records
+# 📂 Project Structure
+
+```
+src/main/java
+
+controller/
+
+service/
+
+repository/
+
+entity/
+
+dto/
+
+mapper/
+
+security/
+
+exception/
+
+config/
+
+enums/
 ```
 
-## 🔐 Authentication Flow
+Each package has a single responsibility following the **SOLID principles**.
 
-```mermaid
-sequenceDiagram
-    participant Client
-    participant AuthController
-    participant JwtService
-    participant Database
-    
-    Client->>AuthController: POST /api/auth/login {username, password}
-    AuthController->>Database: Verify Credentials
-    Database-->>AuthController: User Info
-    AuthController->>JwtService: Generate JWT
-    JwtService-->>AuthController: Token
-    AuthController-->>Client: Returns JWT Token
-    
-    Note over Client,Database: Subsequent Requests
-    Client->>API Endpoints: GET /api/products (Header: Bearer <Token>)
-    API Endpoints->>JwtService: Validate Token
-    JwtService-->>API Endpoints: Token Valid
-    API Endpoints-->>Client: Returns 200 OK (Data)
+---
+
+# 🔐 Authentication Flow
+
+```
+Client
+
+↓
+
+POST /api/auth/login
+
+↓
+
+Spring Security
+
+↓
+
+Authentication Manager
+
+↓
+
+JWT Generation
+
+↓
+
+JWT Returned
+
+↓
+
+Authorization Header
+
+↓
+
+Protected Endpoints
 ```
 
-## ⚙️ Running the Application
+---
 
-### Prerequisites
-*   Java 21 installed
-*   Maven installed (or use the provided `mvnw` wrapper)
+# 📦 Main REST APIs
 
-### Steps to Run
+## Authentication
 
-1.  **Clone the repository** and navigate to the project directory:
-    ```bash
-    cd ventory
-    ```
+```
+POST /api/auth/register
 
-2.  **Run the application** using the Maven wrapper:
-    ```bash
-    ./mvnw spring-boot:run
-    ```
-    *On Windows use `mvnw.cmd spring-boot:run`*
+POST /api/auth/login
+```
 
-3.  **Access the application**:
-    By default, the application runs on `http://localhost:8080`.
+---
 
-### Database Console
-The application uses an in-memory H2 database. You can access the database console while the application is running:
-*   **URL**: `http://localhost:8080/h2-console`
-*   **JDBC URL**: `jdbc:h2:mem:test`
-*   **Username**: `sa` (or default if unconfigured)
-*   **Password**: *(leave blank)*
+## Products
 
-## 📂 Project Structure
+```
+GET /api/products
 
-*   `src/main/java/org/example/ventory/`
-    *   `controller/` - REST API endpoints.
-    *   `dto/` - Data Transfer Objects.
-    *   `entity/` - JPA Domain models.
-    *   `enums/` - Enumerations used across the app.
-    *   `exception/` - Custom exceptions and global handlers.
-    *   `mapper/` - Logic for converting between Entities and DTOs.
-    *   `repository/` - Spring Data JPA repositories.
-    *   `service/` - Business logic implementation.
+GET /api/products/{id}
 
-## 📖 API Documentation
+POST /api/products
 
-The REST API endpoints follow standard conventions. Below is a high-level overview of the main resources:
+PUT /api/products/{id}
 
-### Authentication Endpoints
-*   `POST /api/auth/register` - Register a new user.
-*   `POST /api/auth/login` - Authenticate and receive a JWT.
+DELETE /api/products/{id}
+```
 
-### Product Endpoints
-*   `GET /api/products` - Retrieve all products.
-*   `GET /api/products/{id}` - Retrieve a specific product.
-*   `POST /api/products` - Add a new product (Requires Auth).
-*   `PUT /api/products/{id}` - Update a product (Requires Auth).
-*   `DELETE /api/products/{id}` - Delete a product (Requires Auth).
+---
 
-### Supplier & Category Endpoints
-*   Standard CRUD operations follow the same pattern at `/api/suppliers` and `/api/categories`.
+## Categories
 
-## 🚀 Future Improvements
+```
+GET /api/categories
 
-*   **API Documentation Generation**: Integrate Swagger/OpenAPI (SpringDoc) for automated, interactive API documentation.
-*   **Database Migration**: Introduce Flyway or Liquibase for versioned database schema migrations instead of relying on Hibernate `ddl-auto`.
-*   **Caching**: Implement Redis or Spring Cache to optimize read-heavy operations like fetching product catalogs.
-*   **Testing**: Expand unit and integration test coverage using JUnit and Testcontainers.
-*   **CI/CD Pipeline**: Setup automated GitHub Actions workflows for building, testing, and linting the application.
+POST /api/categories
+```
+
+---
+
+## Suppliers
+
+```
+GET /api/suppliers
+
+POST /api/suppliers
+```
+
+---
+
+## Stock Movements
+
+```
+GET /api/stock-movements
+
+POST /api/stock-movements
+```
+
+---
+
+# 📝 Example Request
+
+## Login
+
+```http
+POST /api/auth/login
+```
+
+Request
+
+```json
+{
+  "username": "admin",
+  "password": "123456"
+}
+```
+
+Response
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiJ9..."
+}
+```
+
+---
+
+# 🚀 Running the Project
+
+## Requirements
+
+- Java 21
+- Maven
+- MySQL
+
+Clone the repository
+
+```bash
+git clone https://github.com/bishoySouser/ventory.git
+```
+
+Navigate to the project
+
+```bash
+cd ventory
+```
+
+Run
+
+```bash
+./mvnw spring-boot:run
+```
+
+Application starts on
+
+```
+http://localhost:8080
+```
+
+---
+
+# 🎯 Engineering Practices
+
+This project demonstrates:
+
+- Clean Architecture Principles
+- SOLID Principles
+- RESTful API Design
+- DTO Mapping
+- Exception Handling
+- Bean Validation
+- Layered Design
+- Constructor Injection
+- Stateless Authentication
+- Repository Pattern
+
+---
+
+# 📈 Roadmap
+
+- [x] JWT Authentication
+- [x] Spring Security
+- [x] Products Module
+- [x] Categories Module
+- [x] Suppliers Module
+- [x] Stock Movement Module
+- [x] DTO Mapping
+- [x] Global Exception Handling
+- [ ] Swagger / OpenAPI
+- [ ] Docker Support
+- [ ] Docker Compose
+- [ ] Redis Caching
+- [ ] Flyway Migration
+- [ ] Unit Testing (JUnit + Mockito)
+- [ ] Integration Testing
+- [ ] Pagination & Sorting
+- [ ] Search & Filtering
+- [ ] Audit Logging
+- [ ] GitHub Actions CI/CD
+
+---
+
+# 👨‍💻 Author
+
+**Bishoy Souser**
+
+Backend Software Engineer
+
+- LinkedIn: https://linkedin.com/in/bishoysouser
+- GitHub: https://github.com/bishoySouser
+- Email: bishoysouser@gmail.com
+
+---
+
+## ⭐ Why this project?
+
+Ventory was built as a hands-on backend engineering project to strengthen expertise in the Java ecosystem and demonstrate the ability to design production-ready backend services using Spring Boot, Spring Security, Hibernate, and RESTful architecture while applying clean code and software engineering best practices.

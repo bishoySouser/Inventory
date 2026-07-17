@@ -21,6 +21,9 @@ public class StockMovementService {
         movement.setProduct(product);
         movement.setQuantity(quantity);
         movement.setMovementType(movementType);
+
+        product.applyMovement(quantity, movementType);
+
         stockMovementRepository.save(movement);
     }
 }

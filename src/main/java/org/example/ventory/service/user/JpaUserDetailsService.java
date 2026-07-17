@@ -1,4 +1,4 @@
-package org.example.ventory.service;
+package org.example.ventory.service.user;
 
 import org.example.ventory.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
